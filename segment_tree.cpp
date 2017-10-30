@@ -2,110 +2,77 @@
 
 using namespace std;
 
-const int N = 312345;
+const int N = 123456;
 
-int tr[4*N];
-
-void update(int i, int tx1, int tx2, int x) {
-	if (tx1 > x || tx2 < x || tx1 > tx2)
-		return;
-
-	if (tx1 == tx2)
-		tr[i] = 1;
-	else {
-		int txm = (tx1 + tx2)/2;
-		update(2*i, tx1, txm, x);
-		update(2*i + 1, txm + 1, tx2, x);
-		tr[i] = tr[2*i] + tr[2*i + 1];
+struct node {
+	// node def
+	int val, lazy;
+	node(int x = 0, int y = 0) {
+		val = x; lazy = y;
 	}
-}
-
-int query(int i, int tx1, int tx2, int x1, int x2) {
-	if (tx1 > tx2 || x1 > x2 || tx1 > x2 || tx2 < x1)
-		return 0;
-
-	if (tx1 >= x1 && tx2 <= x2)
-		return tr[i];
-
-	int txm = (tx1 + tx2)/2;
-	return query(2*i, tx1, txm, x1, x2) + query(2*i + 1, txm + 1, tx2, x1, x2);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////
-
-struct Node
-{
-	//define Value(s) and Lazy
-	int Value, Lazy;
-	Node(int x = 0, int y = 0) {Value = x; Lazy = y;}
 };
 
-Node SegTree[100001];
+node tree[4*N];
 
-void PropogateLazy(int i, int STx1, int STx2)
-{
-	//Propgate laziness
+void propogate_lazy(int i, int tx1, int tx2) {
+	// propgate laziness
 }
 
-void Merge(Node& Ans, Node& Left, Node& Right)
-{
-	//Merge operation
+void merge(node &ans, node &left, node &right) {
+	// merge operation
 }
 
-void Build(int i, int STx1, int STx2)
-{
-	if (STx1 > STx2)
+void build(int i, int tx1, int tx2) {
+	if (tx1 > tx2)
 		return;
 
-	if (STx1 == STx2)
-	{
-		//Set leaf node
+	if (tx1 == tx2) {
+		// set leaf node
 		return;
 	}
 
-	int STxm = (STx1 + STx2)/2;
-	Build(2*i, STx1, STxm);
-	Build(2*i + 1, STxm + 1, STx2);
-	Merge(SegTree[i], SegTree[2*i], SegTree[2*i + 1]);
+	int txm = (tx1 + tx2)/2;
+	build(2*i, tx1, txm);
+	build(2*i + 1, txm + 1, tx2);
+	merge(tree[i], tree[2*i], tree[2*i + 1]);
 }
 
-void UpdateRange(int i, int STx1, int STx2, int x1, int x2, int V, int P)
-{
-	PropogateLazy(i, STx1, STx2);
+void update(int i, int tx1, int tx2, int x1, int x2, int V, int P) {
+	propogate_lazy(i, tx1, tx2);
 
-	if (STx1 > STx2 || x1 > x2 || STx1 > x2 || STx2 < x1)
+	if (tx1 > tx2 || x1 > x2 || tx1 > x2 || tx2 < x1)
 		return;
 
-	if (STx1 >= x1 && STx2 <= x2)
-	{
-		//Update current node 'i' and propgate laziness down if (STx1 != STx2)
+	if (tx1 >= x1 && tx2 <= x2) {
+		// update current node 'i' and propgate laziness down if (tx1 != tx2)
 		return;
 	}
 
-	int STxm = (STx1 + STx2)/2;
-	UpdateRange(2*i, STx1, STxm, x1, x2, V, P);
-	UpdateRange(2*i + 1, STxm + 1, STx2, x1, x2, V, P);
-	Merge(SegTree[i], SegTree[2*i], SegTree[2*i + 1]);
+	int txm = (tx1 + tx2)/2;
+	update(2*i, tx1, txm, x1, x2, V, P);
+	update(2*i + 1, txm + 1, tx2, x1, x2, V, P);
+	merge(tree[i], tree[2*i], tree[2*i + 1]);
 }
 
-Node Query(int i, int STx1, int STx2, int x1, int x2)
-{
-	PropogateLazy(i, STx1, STx2);
+node query(int i, int tx1, int tx2, int x1, int x2) {
+	propogate_lazy(i, tx1, tx2);
 
-	if (STx1 > STx2 || x1 > x2 || STx1 > x2 || STx2 < x1)
-		return Node();
+	if (tx1 > tx2 || x1 > x2 || tx1 > x2 || tx2 < x1)
+		return node();
 
-	if (STx1 >= x1 && STx2 <= x2)
-		return SegTree[i];
-	int STxm = (STx1 + STx2)/2;
-	Node Ans, Left = Query(2*i, STx1, STxm, x1, x2), Right = Query(2*i + 1, STxm + 1, STx2, x1, x2);
-	Merge(Ans, Left, Right);
-	return Ans;
+	if (tx1 >= x1 && tx2 <= x2)
+		return tree[i];
+
+	int txm = (tx1 + tx2)/2;
+	node ans,
+		left = query(2*i, tx1, txm, x1, x2),
+		right = query(2*i + 1, txm + 1, tx2, x1, x2);
+
+	merge(ans, left, right);
+	return ans;
 }
 
-int main()
-{
+int main() {
 	ios::sync_with_stdio(false);
 	
 	return 0;
