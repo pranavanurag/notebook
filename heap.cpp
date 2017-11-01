@@ -31,7 +31,7 @@ struct pq {
 		}
 	}
 
-	int get_max() {
+	int front() {
 		return x[1];
 	}
 
@@ -40,6 +40,17 @@ struct pq {
 		x.pop_back();
 		n--;
 		max_heapify(1);
+	}
+
+	void insert(int v) {
+		x.push_back(v);
+		n++;
+
+		int i = n;
+		while (i > 1 && x[i/2] < x[i]) {
+			swap(x[i], x[i/2]);
+			i = i/2;
+		}
 	}
 
 	void build(vector <int> a) {
@@ -56,15 +67,16 @@ struct pq {
 int main() {
 	ios::sync_with_stdio(false);
 	
-	int n;
-	cin>>n;
-	vector <int> a;
-	a.resize(n);
-	for (int i = 0; i < n; i++)
-		cin>>a[i];
+	vector <int> a = {1, 2, 5, 3, 6, -1, 10, 7};
 
 	pq q;
 	q.build(a);
+	q.show();
+
+	q.insert(-9);
+	q.show();
+
+	q.insert(7);
 	q.show();
 	return 0;
 }
