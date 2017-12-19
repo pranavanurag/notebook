@@ -44,7 +44,7 @@ void update(int i, int tx1, int tx2, int x1, int x2, int V, int P) {
 		return;
 
 	if (tx1 >= x1 && tx2 <= x2) {
-		// update current node 'i' and propgate laziness down if (tx1 != tx2)
+		// update current node 'i' and propogate laziness down if (tx1 != tx2)
 		return;
 	}
 
