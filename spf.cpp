@@ -4,15 +4,15 @@ using namespace std;
 
 const int N = 123456;
 
-int spf[N];
+int lpf[N];
 
 void pre() {
 	for (int i = 2; i < N; i++)
-		spf[i] = i;
+		lpf[i] = i;
 	for (int i = 2; i*i < N; i++)
-		if (spf[i] == i)
+		if (lpf[i] == i)
 			for (int j = i*i; j < N; j += i)
-				spf[j] = i;
+				lpf[j] = i;
 }
 
 int main() {
