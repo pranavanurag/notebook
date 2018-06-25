@@ -54,6 +54,7 @@ int main() {
 		adj[u].push_back(v);
 		// adj[v].push_back(u);	//uncomment for undirected graph
 		w[u][v] = d;
+		// w[v][u] = d;			//uncomment for undirected graph
 	}
 
 	dijkstra(1);
