@@ -10,7 +10,7 @@ long long fac[N];
 
 void precompute() {
 	fac[0] = 1;
-	for (int i = 1; i <= N; i++)
+	for (int i = 1; i < N; i++)
 		fac[i] = (fac[i - 1]*i)%mod;
 }
 
